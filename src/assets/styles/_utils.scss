@@ -1,0 +1,104 @@
+// Variables in Media queries
+$X32: 360px;
+$X37: 376px;
+$X48: 480px;
+$XS: 575px;
+$SM: 576px;
+$X67: 667px;
+$MD: 768px;
+$LG: 992px;
+$XL: 1200px;
+$XXL: 1400px;
+$X1360: 1000px;
+$X1366: 1400px;
+$X17: 1700px;
+$X19: 1921px;
+
+// Media queries
+@mixin Responsive($canvas) {
+  @if $canvas ==X32 {
+	@media screen and (max-width: $X37) {
+	  @content;
+	}
+  }
+  @if $canvas ==X37 {
+	@media only screen and (max-width: $X37) and (max-height: $XS) {
+	  @content;
+	}
+  }
+  @if $canvas ==X37H {
+	@media only screen and (max-width: $X37) and (min-height: $XS) and (max-height: $LG) {
+	  @content;
+	}
+  }
+  @if $canvas ==X48 {
+	@media only screen and (max-width: $X48) {
+	  @content;
+	}
+  }
+  @if $canvas ==X67 {
+	@media only screen and (max-width: $X37) and (max-height: $MD) {
+	  @content;
+	}
+  } @else if $canvas ==XS {
+	@media only screen and (max-width: $XS) {
+	  @content;
+	}
+  } @else if $canvas ==SM {
+	@media only screen and (max-width: $SM) {
+	  @content;
+	}
+  } @else if $canvas ==MD {
+	@media only screen and (max-width: $MD) {
+	  @content;
+	}
+  } @else if $canvas ==LG {
+	@media only screen and (max-width: $LG) {
+	  @content;
+	}
+  } @else if $canvas ==XL {
+	@media only screen and (max-width: $XL) {
+	  @content;
+	}
+  } @else if $canvas ==XXL {
+	@media only screen and (max-width: $XXL) {
+	  @content;
+	}
+  } @else if $canvas ==X17 {
+	@media only screen and (max-width: $X17) {
+	  @content;
+	}
+  } @else if $canvas ==X19 {
+	@media only screen and (max-width: $X1921) {
+	  @content;
+	}
+  } @else if $canvas ==X1366 {
+	@media only screen and (min-width: $X1360) and (max-width: $X1366) {
+	  @content;
+	}
+  }
+}
+
+$XS: 667px;
+$SM: 767px;
+$MD: 768px;
+$LG: 992px;
+@mixin Height($canvas) {
+  @if $canvas ==XS {
+	@media only screen and (max-height: $XS) {
+	  @content;
+	}
+  }
+  @if $canvas ==SM {
+	@media only screen and (max-height: $SM) {
+	  @content;
+	}
+  } @else if $canvas ==MD {
+	@media only screen and (min-height: $MD) {
+	  @content;
+	}
+  }
+}
+
+$HeaderIconWidthLG: 40px;
+$HeaderIconWidthSM: 35px;

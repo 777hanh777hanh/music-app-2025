@@ -1,0 +1,33 @@
+@use './reset';
+@use './fonts';
+@use './color';
+@use './utils';
+@use './variables';
+
+
+body {
+	font-family: var(--primary-font), sans-serif;
+	background: var(--bg-app-clr);
+	background: rgba(212, 46, 47, 0.7);
+}
+
+.container {
+	--gutter-container: 32px;
+
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+
+	margin-right: auto;
+	margin-left: auto;
+	padding-right: calc(var(--gutter-container) / 2);
+	padding-left: calc(var(--gutter-container) / 2);
+
+	width: min(575.98px, 100%);
+
+	background: var(--bg-dark-app-clr);
+
+	@include utils.Responsive(MD) {
+		--gutter-container: 16px;
+	}
+}

@@ -1,0 +1,28 @@
+:root {
+	--primary-color: #3498db;
+	--bg-app-clr: #fafafa;
+	--bg-dark-app-clr: #2f2f2f;
+
+	--white-clr: #fff;
+	--dark-gray-clr: #333;
+
+	// navbar
+	--navbar-bg-clr: #d42e2f;
+
+	// icons
+	--icon-clr: brightness(0) saturate(100%) invert(13%) sepia(1%) saturate(0%) hue-rotate(344deg) brightness(101%) contrast(82%);
+	--icon-active-clr: brightness(0) saturate(100%) invert(95%) sepia(5%) saturate(18%) hue-rotate(281deg) brightness(103%) contrast(106%);
+
+	// songs
+	--duration-line: rgba(255, 255, 255, 0.5);
+
+	/* Form */
+	--alert-clr: #f00;
+	--alert-btn-bg-clr: #de1c3b;
+	--alert-text-clr: #ff5558;
+	--text-desc-clr: #6a6a6a;
+	--input-bg-clr: #f4f6f8;
+	--input-border-clr: #595a5c;
+	--input-placeholder-clr: #A3A5A8;
+	--input-text-color: #606060;
+}
