@@ -93,6 +93,25 @@
 		document.removeEventListener('touchend', handleDragEnd);
 	};
 
+	document.addEventListener(
+		'click',
+		() => {
+			if (!isPlaying.value) {
+				playSong();
+			}
+		},
+		{ once: true }
+	);
+	document.addEventListener(
+		'touchstart',
+		() => {
+			if (!isPlaying.value) {
+				playSong();
+			}
+		},
+		{ once: true }
+	);
+
 	onMounted(() => {
 		playSong();
 	});

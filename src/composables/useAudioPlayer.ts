@@ -92,7 +92,11 @@ export function useAudioPlayer(
 	function playSong() {
 		console.log('🎵 Playing song:', currentSong.value);
 		console.log('🎵 Playing song:', player.value);
-		player.value?.play();
+		try {
+			player.value?.play();
+		} catch (error) {
+			console.error('🔴 Safari Play Error:', error);
+		}
 		isPlaying.value = true;
 	}
 
