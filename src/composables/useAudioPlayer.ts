@@ -32,7 +32,8 @@ export function useAudioPlayer(
 		// Tạo Howler instance
 		player.value = new Howl({
 			src: [currentSong.value.audio],
-			html5: false,
+			html5: true,
+			preload: true,
 			autoplay: true,
 			onload: () => {
 				duration.value = player.value?.duration() ?? 0;
@@ -48,19 +49,6 @@ export function useAudioPlayer(
 			onend: () => {
 				handleEndSong();
 			},
-			onloaderror: (id, error) => {
-				console.warn(
-					'Web Audio API không hỗ trợ, chuyển sang HTML5:',
-					error
-				);
-				// Nếu lỗi, tạo lại Howler với `html5: true`
-				player.value = new Howl({
-					src: [currentSong.value.audio],
-					html5: true,
-					autoplay: true
-				});
-			},
-			format: ['mp3'], // ✅ Giúp Howler nhận diện chính xác định dạng file
 			xhr: {
 				method: 'GET',
 				headers: {
