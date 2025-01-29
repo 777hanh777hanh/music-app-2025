@@ -1,7 +1,7 @@
 import { computed, ref, watch } from 'vue';
 import { Howl } from 'howler';
 
-export async function useAudioPlayer(
+export function useAudioPlayer(
 	currentSongIndex,
 	loopSong,
 	randomSong,
@@ -17,7 +17,7 @@ export async function useAudioPlayer(
 
 	const setupHowler = async () => {
 		if (player.value) {
-			await player.value.unload();
+			player.value.unload();
 		}
 
 		// Cập nhật `currentSong`
@@ -27,12 +27,12 @@ export async function useAudioPlayer(
 		currentSongThumbnail.value = currentSong.value.thumbnail;
 
 		// Lưu vào localStorage
-		await saveCurrentSong();
+		saveCurrentSong();
 
 		// Tạo Howler instance
 		player.value = new Howl({
 			src: [currentSong.value.audio],
-			html5: true,
+			html5: false,
 			autoplay: true,
 			onload: () => {
 				duration.value = player.value?.duration() ?? 0;
@@ -47,12 +47,32 @@ export async function useAudioPlayer(
 			},
 			onend: () => {
 				handleEndSong();
+			},
+			onloaderror: (id, error) => {
+				console.warn(
+					'Web Audio API không hỗ trợ, chuyển sang HTML5:',
+					error
+				);
+				// Nếu lỗi, tạo lại Howler với `html5: true`
+				player.value = new Howl({
+					src: [currentSong.value.audio],
+					html5: true,
+					autoplay: true
+				});
+			},
+			format: ['mp3'], // ✅ Giúp Howler nhận diện chính xác định dạng file
+			xhr: {
+				method: 'GET',
+				headers: {
+					'Cache-Control': 'no-store', // ✅ Ngăn IDM cache file
+					'X-Requested-With': 'XMLHttpRequest' // ✅ Ngăn IDM nhận diện là file tải về
+				}
 			}
 		});
 	};
 
 	// Tải bài hát từ localStorage trước khi khởi chạy
-	await loadCurrentSong();
+	loadCurrentSong();
 
 	const startUpdatingTime = () => {
 		if (updateInterval) return;
@@ -126,19 +146,21 @@ export async function useAudioPlayer(
 
 	async function loadCurrentSong() {
 		const storedSong = localStorage.getItem('currentSong');
-		if (!storedSong) return;
+		if (!storedSong) {
+			currentSongIndex.value = 0;
+		} else {
+			const parsedSong = JSON.parse(storedSong);
+			const foundIndex = listSongs.findIndex(
+				(song) => song.audio === parsedSong.audio
+			);
 
-		const parsedSong = JSON.parse(storedSong);
-		const foundIndex = listSongs.findIndex(
-			(song) => song.audio === parsedSong.audio
-		);
+			currentSongIndex.value = foundIndex !== -1 ? foundIndex : 0;
+		}
 
-		currentSongIndex.value = foundIndex !== -1 ? foundIndex : 0;
 		currentSong.value = listSongs[currentSongIndex.value];
-
 		console.log('🎵 Loaded song from localStorage:', currentSong.value);
-		await setupHowler();
-		await playSong();
+		setupHowler();
+		playSong();
 	}
 
 	const seekTime = (time: number) => {

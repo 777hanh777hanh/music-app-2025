@@ -13,22 +13,22 @@ const useMusicStore = defineStore('music-store', () => {
 		{
 			title: 'Túp Lều Vàng - Nguyễn Đình Vũ X Nboro | Official Mv Lyrics',
 			thumbnail: '/assets/images/songs/TupLeuVang.png',
-			audio: '/assets/audio/TupLeuVang.mp4'
+			audio: '/assets/audio/TupLeuVang.mp3'
 		},
 		{
 			title: 'Thương Nhau Tới Bến - Nal | Cover Út Nhị Mino',
 			thumbnail: '/assets/images/songs/ThuongNhauToiBen.png',
-			audio: '/assets/audio/ThuongNhauToiBen.mp4'
+			audio: '/assets/audio/ThuongNhauToiBen.mp3'
 		},
 		{
 			title: 'Đón Một Năm Mới - Út Nhị Mino | NVC Media',
 			thumbnail: '/assets/images/songs/DonMotNamMoi.png',
-			audio: '/assets/audio/DonMotNamMoi.mp4'
+			audio: '/assets/audio/DonMotNamMoi.mp3'
 		},
 		{
 			title: 'Này Này Anh Ơi | Trà My ft Út Nhị | Cover Út Nhị Mino',
 			thumbnail: '/assets/images/songs/NayNayAnhOi.png',
-			audio: '/assets/audio/NayNayAnhOi.mp4'
+			audio: '/assets/audio/NayNayAnhOi.mp3'
 		}
 	];
 
