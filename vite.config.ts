@@ -7,7 +7,7 @@ import path from 'path';
 // console.log('meta', path);
 // https://vitejs.dev/config/
 export default defineConfig({
-	base: '/',
+	base: './',
 	plugins: [
 		createHtmlPlugin({
 			inject: {
