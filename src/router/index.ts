@@ -15,27 +15,28 @@ const router: CustomRouter = createRouter({
 		{
 			path: pathNames.home,
 			name: 'HomeView',
-			component: () => importView('HomeView')
+			component: () => import('@/views/HomeView')
 		},
 		{
 			path: pathNames.about,
 			name: 'AboutView',
-			component: () => importView('AboutView')
+			// component: () => importView('AboutView')
+			component: () => import('@/views/AboutView')
 		},
 		{
 			path: pathNames.demo,
 			name: 'DemoView',
-			component: () => importView('DemoView')
+			component: () => import('@/views/DemoView')
 		},
 		{
 			path: pathNames.notFound,
 			name: 'NotFoundView',
-			component: () => importView('NotFoundView')
+			component: () => import('@/views/NotFoundView')
 		},
 		{
 			path: pathNames.soundClick,
 			name: 'SoundView',
-			component: () => importView('SoundView')
+			component: () => import('@/views/SoundView')
 		},
 		{
 			path: '/:pathMatch(.*)*',
