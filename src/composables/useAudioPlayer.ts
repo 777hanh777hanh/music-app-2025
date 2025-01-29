@@ -1,7 +1,7 @@
 import { computed, ref, watch } from 'vue';
 import { Howl } from 'howler';
 
-export function useAudioPlayer(
+export async function useAudioPlayer(
 	currentSongIndex,
 	loopSong,
 	randomSong,
@@ -15,9 +15,9 @@ export function useAudioPlayer(
 	const currentSongThumbnail = ref(null);
 	let updateInterval: number | null = null;
 
-	const setupHowler = () => {
+	const setupHowler = async () => {
 		if (player.value) {
-			player.value.unload();
+			await player.value.unload();
 		}
 
 		// Cập nhật `currentSong`
@@ -27,7 +27,7 @@ export function useAudioPlayer(
 		currentSongThumbnail.value = currentSong.value.thumbnail;
 
 		// Lưu vào localStorage
-		saveCurrentSong();
+		await saveCurrentSong();
 
 		// Tạo Howler instance
 		player.value = new Howl({
@@ -52,7 +52,7 @@ export function useAudioPlayer(
 	};
 
 	// Tải bài hát từ localStorage trước khi khởi chạy
-	loadCurrentSong();
+	await loadCurrentSong();
 
 	const startUpdatingTime = () => {
 		if (updateInterval) return;
@@ -137,8 +137,8 @@ export function useAudioPlayer(
 		currentSong.value = listSongs[currentSongIndex.value];
 
 		console.log('🎵 Loaded song from localStorage:', currentSong.value);
-		setupHowler();
-		playSong();
+		await setupHowler();
+		await playSong();
 	}
 
 	const seekTime = (time: number) => {
