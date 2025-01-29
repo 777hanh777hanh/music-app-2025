@@ -7,7 +7,7 @@ interface CustomRouter extends Router {
 }
 
 const importView = (name: string): Promise<any> =>
-	import(/* webpackChunkName: "[request]" */ `@/views/${name}/index.ts`);
+	import(`@/views/${name}/index.ts`);
 
 const router: CustomRouter = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,27 +15,27 @@ const router: CustomRouter = createRouter({
 		{
 			path: pathNames.home,
 			name: 'HomeView',
-			component: () => importView('HomeView').then()
+			component: () => importView('HomeView')
 		},
 		{
 			path: pathNames.about,
 			name: 'AboutView',
-			component: () => importView('AboutView').then()
+			component: () => importView('AboutView')
 		},
 		{
 			path: pathNames.demo,
 			name: 'DemoView',
-			component: () => importView('DemoView').then()
+			component: () => importView('DemoView')
 		},
 		{
 			path: pathNames.notFound,
 			name: 'NotFoundView',
-			component: () => importView('NotFoundView').then()
+			component: () => importView('NotFoundView')
 		},
 		{
 			path: pathNames.soundClick,
 			name: 'SoundView',
-			component: () => importView('SoundView').then()
+			component: () => importView('SoundView')
 		},
 		{
 			path: '/:pathMatch(.*)*',

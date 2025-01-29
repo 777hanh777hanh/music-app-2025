@@ -14,11 +14,11 @@
 		"baseUrl": "./",
 		"paths": {
 			"@/components/*": [
-				"./src/components/*",
-				"./src/components/*/index.vue"
+				"src/components/*",
+				"src/components/*/index.vue"
 			],
 			"@/*": [
-				"./src/*"
+				"src/*"
 			]
 		},
 		"lib": [
