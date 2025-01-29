@@ -6,8 +6,10 @@ interface CustomRouter extends Router {
 	first: string;
 }
 
-const importView = (name: string): Promise<any> =>
-	import(`@/views/${name}/index.js`);
+// const importView = (name: string): Promise<any> =>
+// 	import(/* webpackChunkName: "[request]" */`@/views/${name}/index.js`);
+// const importView = (name: string): Promise<any> =>
+// 	import(`@/views/${name}/index.ts`);
 
 const router: CustomRouter = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,28 +17,35 @@ const router: CustomRouter = createRouter({
 		{
 			path: pathNames.home,
 			name: 'HomeView',
-			component: () => import('@/views/HomeView')
+			component: () =>
+				import(/* webpackChunkName: "HomeView" */ '@/views/HomeView')
 		},
 		{
 			path: pathNames.about,
 			name: 'AboutView',
 			// component: () => importView('AboutView')
-			component: () => import('@/views/AboutView')
+			component: () =>
+				import(/* webpackChunkName: "AboutView" */ '@/views/AboutView')
 		},
 		{
 			path: pathNames.demo,
 			name: 'DemoView',
-			component: () => import('@/views/DemoView')
+			component: () =>
+				import(/* webpackChunkName: "DemoView" */ '@/views/DemoView')
 		},
 		{
 			path: pathNames.notFound,
 			name: 'NotFoundView',
-			component: () => import('@/views/NotFoundView')
+			component: () =>
+				import(
+					/* webpackChunkName: "NotFoundView" */ '@/views/NotFoundView'
+				)
 		},
 		{
 			path: pathNames.soundClick,
 			name: 'SoundView',
-			component: () => import('@/views/SoundView')
+			component: () =>
+				import(/* webpackChunkName: "SoundView" */ '@/views/SoundView')
 		},
 		{
 			path: '/:pathMatch(.*)*',
