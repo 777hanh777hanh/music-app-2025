@@ -5,9 +5,9 @@
 	"type": "module",
 	"scripts": {
 		"dev": "vite --host",
-		"build": "run-p type-check \"build-only {@}\" --",
+		"build": "vite build --output dist",
 		"preview": "vite preview",
-		"build-only": "vite build --output public",
+		"build-only": "vite build --output dist",
 		"type-check": "vue-tsc --build"
 	},
 	"dependencies": {
