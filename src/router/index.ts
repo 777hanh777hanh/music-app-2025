@@ -6,7 +6,8 @@ interface CustomRouter extends Router {
 	first: string;
 }
 
-const importView = (name: string): Promise<any> => import(`@/views/${name}`);
+const importView = (name: string): Promise<any> =>
+	import(`@/views/${name}/index.js`);
 
 const router: CustomRouter = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
