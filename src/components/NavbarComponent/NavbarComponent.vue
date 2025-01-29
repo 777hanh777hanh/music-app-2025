@@ -19,7 +19,6 @@
 		stopSong,
 		prevSong,
 		nextSong,
-		saveCurrentSong,
 		toggleLoopSong,
 		toggleRandomSong
 	} = musicStore;

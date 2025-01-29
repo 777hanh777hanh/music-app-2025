@@ -1,43 +1,44 @@
 {
-  "compilerOptions": {
-    "target": "es5",
-    "noImplicitAny": false,
-    "useDefineForClassFields": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "strict": true,
-    "jsx": "preserve",
-    "sourceMap": true,
-    "resolveJsonModule": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "baseUrl": "./",
-    "paths": {
-      "@/components/*": [
-        "./src/components/*",
-        "./src/components/*/index.vue"
-      ],
-      "@/*": [
-        "./src/*"
-      ]
-    },
-    "lib": [
-      "esnext",
-      "dom"
-    ],
-    "types": [
-      "vite/client"
-    ],
-    "skipDefaultLibCheck": true
-  },
-  "include": [
-    "src/**/*.ts",
-    "src/**/*.d.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue"
-  ],
-  "exclude": [
-    "dist",
-    "node_modules"
-  ]
+	"compilerOptions": {
+		"target": "es5",
+		"noImplicitAny": false,
+		"useDefineForClassFields": true,
+		"module": "esnext",
+		"moduleResolution": "node",
+		"strict": true,
+		"jsx": "preserve",
+		"sourceMap": true,
+		"resolveJsonModule": true,
+		"skipLibCheck": true,
+		"esModuleInterop": true,
+		"baseUrl": "./",
+		"paths": {
+			"@/components/*": [
+				"./src/components/*",
+				"./src/components/*/index.vue"
+			],
+			"@/*": [
+				"./src/*"
+			]
+		},
+		"lib": [
+			"esnext",
+			"dom"
+		],
+		"types": [
+			"vite/client"
+		],
+		"skipDefaultLibCheck": true
+	},
+	"include": [
+		"src/**/*.ts",
+		"src/**/*.d.ts",
+		"src/**/*.tsx",
+		"src/**/*.vue"
+	],
+	"exclude": [
+		"dist",
+		"public",
+		"node_modules"
+	]
 }
