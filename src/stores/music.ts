@@ -8,27 +8,27 @@ const useMusicStore = defineStore('music-store', () => {
 		{
 			title: 'Hoàng Hôn \n(KxK X NVC Music) | Út Nhị Cover',
 			thumbnail: '/assets/images/songs/HoangHon.png',
-			audio: 'https://xvatxthpyzulekbtgezd.supabase.co/storage/v1/object/public/Audio//HoangHon.mp3'
+			audio: 'https://xvatxthpyzulekbtgezd.supabase.co/storage/v1/object/public/Audio//Hoanghon.mp4'
 		},
 		{
 			title: 'Túp Lều Vàng - Nguyễn Đình Vũ X Nboro | Official Mv Lyrics',
 			thumbnail: '/assets/images/songs/TupLeuVang.png',
-			audio: 'https://xvatxthpyzulekbtgezd.supabase.co/storage/v1/object/public/Audio//TupLeuVang.mp3'
+			audio: 'https://xvatxthpyzulekbtgezd.supabase.co/storage/v1/object/public/Audio//Tupleuvang.mp4'
 		},
 		{
 			title: 'Thương Nhau Tới Bến - Nal | Cover Út Nhị Mino',
 			thumbnail: '/assets/images/songs/ThuongNhauToiBen.png',
-			audio: 'https://xvatxthpyzulekbtgezd.supabase.co/storage/v1/object/public/Audio//ThuongNhauToiBen.mp3'
+			audio: 'https://xvatxthpyzulekbtgezd.supabase.co/storage/v1/object/public/Audio//ThuongNhauToiBen.mp4'
 		},
 		{
 			title: 'Đón Một Năm Mới - Út Nhị Mino | NVC Media',
 			thumbnail: '/assets/images/songs/DonMotNamMoi.png',
-			audio: 'https://xvatxthpyzulekbtgezd.supabase.co/storage/v1/object/public/Audio//DonMotNamMoi.mp3'
+			audio: 'https://xvatxthpyzulekbtgezd.supabase.co/storage/v1/object/public/Audio//DonMotNamMoi.mp4'
 		},
 		{
 			title: 'Này Này Anh Ơi | Trà My ft Út Nhị | Cover Út Nhị Mino',
 			thumbnail: '/assets/images/songs/NayNayAnhOi.png',
-			audio: 'https://xvatxthpyzulekbtgezd.supabase.co/storage/v1/object/public/Audio//NayNayAnhOi.mp3'
+			audio: 'https://xvatxthpyzulekbtgezd.supabase.co/storage/v1/object/public/Audio//NayNayAnhOi.mp4'
 		}
 	];
 
