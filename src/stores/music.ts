@@ -29,6 +29,11 @@ const useMusicStore = defineStore('music-store', () => {
 			title: 'Này Này Anh Ơi | Trà My ft Út Nhị | Cover Út Nhị Mino',
 			thumbnail: '/assets/images/songs/NayNayAnhOi.png',
 			audio: 'https://xvatxthpyzulekbtgezd.supabase.co/storage/v1/object/public/Audio//NayNayAnhOi.mp4'
+		},
+		{
+			title: 'Bật Tình Yêu Lên - Hòa Minzy X Tăng Duy Tân',
+			thumbnail: '/assets/images/songs/BatTinhYeuLen.png',
+			audio: 'https://xvatxthpyzulekbtgezd.supabase.co/storage/v1/object/public/Audio//BatTinhYeuLen.mp4'
 		}
 	];
 
