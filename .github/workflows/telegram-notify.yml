@@ -34,21 +34,34 @@ jobs:
           export REF="${GITHUB_REF##*/}"
           export COMMIT_MSG="${{ steps.commit.outputs.message }}"
           export REPO_URL="https://github.com/$GITHUB_REPOSITORY"
-          
-          # Xác định loại event và thiết lập thông báo phù hợp
+
+          # In thông tin debug để dễ theo dõi
+          echo "Event: ${{ github.event_name }}"
+          echo "Ref type: ${{ github.ref_type }}"
+          echo "Ref: $REF"
+
+          # Xử lý riêng cho từng loại sự kiện
           if [[ "${{ github.ref_type }}" == "tag" ]]; then
-            export MESSAGE="🚀 New Release%0A%0A<code>$REPO</code>: Tag <code>$REF</code>%0A$COMMIT_MSG%0Aby $AUTHOR%0A%0A$REPO_URL"
-          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            # Nếu là một tag được tạo ra
+            export MESSAGE="🚀 New Release%0A%0A<code>$REPO</code>: Tag <code>$REF</code>%0A$COMMIT_MSG%0Aby $AUTHOR%0A%0A$REPO_URL/releases/tag/$REF"
+
+          elif [[ "${{ github.event_name }}" == "push" && "${{ github.ref_type }}" == "branch" ]]; then
+            # Nếu là push vào branch (không phải tag)
             export MESSAGE="📝 New Push%0A%0A<code>$REPO</code>: Branch <code>$REF</code>%0A$COMMIT_MSG%0Aby $AUTHOR%0A%0A$REPO_URL/commit/${{ github.sha }}"
+
           elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            # Nếu là pull request
             export PR_TITLE="${{ github.event.pull_request.title }}"
             export PR_URL="${{ github.event.pull_request.html_url }}"
             export PR_NUM="${{ github.event.pull_request.number }}"
             export MESSAGE="🔍 New Pull Request #$PR_NUM%0A%0A<code>$REPO</code>%0A$PR_TITLE%0Aby $AUTHOR%0A%0A$PR_URL"
+
           else
+            # Trường hợp khác
             export MESSAGE="⚡ Repository Activity%0A%0A<code>$REPO</code>%0A$COMMIT_MSG%0Aby $AUTHOR%0A%0A$REPO_URL"
           fi
-          
+
+          # Gửi thông báo
           curl -s -X POST \
             -d "parse_mode=HTML&chat_id=${{ secrets.TELEGRAM_CHAT_ID }}&text=$MESSAGE" \
             https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage
