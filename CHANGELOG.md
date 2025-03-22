@@ -1,3 +1,10 @@
+## <small>0.0.7 (2025-03-22)</small>
+
+* build: setting notification of tele ([5cc5fd3](https://github.com/777hanh777hanh/music-app-2025/commit/5cc5fd3))
+* style(music_store): remove comment ([7800755](https://github.com/777hanh777hanh/music-app-2025/commit/7800755))
+
+
+
 ## <small>0.0.6 (2025-03-22)</small>
 
 * build: Classification of Notification for Telegram ([1541c7a](https://github.com/777hanh777hanh/music-app-2025/commit/1541c7a))
