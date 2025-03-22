@@ -1,0 +1,33 @@
+name: Telegram Notification
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Get commit details
+        id: commit
+        run: |
+          echo "::set-output name=message::$(git log -1 --pretty=format:%s)"
+          echo "::set-output name=author::$(git log -1 --pretty=format:%an)"
+
+      - name: Send Telegram notification
+        run: |
+          export AUTHOR="${{ steps.commit.outputs.author }}"
+          export REPO="${GITHUB_REPOSITORY##*/}"
+          export TAG="${GITHUB_REF##*/}"
+          export COMMIT_MSG="${{ steps.commit.outputs.message }}"
+          export REPO_URL="https://github.com/$GITHUB_REPOSITORY"
+          
+          export MESSAGE="🚀 New Release%0A%0A<code>$REPO</code>: <code>$TAG</code>%0A$COMMIT_MSG%0Aby $AUTHOR%0A%0A$REPO_URL"
+          
+          curl -s -X POST \
+            -d "parse_mode=HTML&chat_id=${{ secrets.TELEGRAM_CHAT_ID }}&text=$MESSAGE" \
+            https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage
