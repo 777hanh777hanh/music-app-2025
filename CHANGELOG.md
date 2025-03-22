@@ -1,3 +1,9 @@
+## <small>0.0.2 (2025-03-22)</small>
+
+* build: update ci ([ecccaf2](https://github.com/777hanh777hanh/music-app-2025/commit/ecccaf2))
+
+
+
 ## <small>0.0.1 (2025-03-22)</small>
 
 * build: add bumpedrc file ([712e159](https://github.com/777hanh777hanh/music-app-2025/commit/712e159))
