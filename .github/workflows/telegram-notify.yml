@@ -18,6 +18,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
 
       - name: Get commit details
         id: commit
@@ -29,11 +31,23 @@ jobs:
         run: |
           export AUTHOR="${{ steps.commit.outputs.author }}"
           export REPO="${GITHUB_REPOSITORY##*/}"
-          export TAG="${GITHUB_REF##*/}"
+          export REF="${GITHUB_REF##*/}"
           export COMMIT_MSG="${{ steps.commit.outputs.message }}"
           export REPO_URL="https://github.com/$GITHUB_REPOSITORY"
           
-          export MESSAGE="🚀 New Release%0A%0A<code>$REPO</code>: <code>$TAG</code>%0A$COMMIT_MSG%0Aby $AUTHOR%0A%0A$REPO_URL"
+          # Xác định loại event và thiết lập thông báo phù hợp
+          if [[ "${{ github.ref_type }}" == "tag" ]]; then
+            export MESSAGE="🚀 New Release%0A%0A<code>$REPO</code>: Tag <code>$REF</code>%0A$COMMIT_MSG%0Aby $AUTHOR%0A%0A$REPO_URL"
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            export MESSAGE="📝 New Push%0A%0A<code>$REPO</code>: Branch <code>$REF</code>%0A$COMMIT_MSG%0Aby $AUTHOR%0A%0A$REPO_URL/commit/${{ github.sha }}"
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            export PR_TITLE="${{ github.event.pull_request.title }}"
+            export PR_URL="${{ github.event.pull_request.html_url }}"
+            export PR_NUM="${{ github.event.pull_request.number }}"
+            export MESSAGE="🔍 New Pull Request #$PR_NUM%0A%0A<code>$REPO</code>%0A$PR_TITLE%0Aby $AUTHOR%0A%0A$PR_URL"
+          else
+            export MESSAGE="⚡ Repository Activity%0A%0A<code>$REPO</code>%0A$COMMIT_MSG%0Aby $AUTHOR%0A%0A$REPO_URL"
+          fi
           
           curl -s -X POST \
             -d "parse_mode=HTML&chat_id=${{ secrets.TELEGRAM_CHAT_ID }}&text=$MESSAGE" \
