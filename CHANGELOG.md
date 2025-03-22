@@ -1,3 +1,9 @@
+## <small>0.0.5 (2025-03-22)</small>
+
+* build: update notify telegram ([6ff8526](https://github.com/777hanh777hanh/music-app-2025/commit/6ff8526))
+
+
+
 ## <small>0.0.4 (2025-03-22)</small>
 
 
