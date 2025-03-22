@@ -4,10 +4,13 @@ on:
   push:
     tags:
       - '*'
-    pull_request:
-      types: [ opened, synchronize, reopened ]
-      branches:
-        - '*'
+    branches:
+      - main
+      - develop
+  pull_request:
+    types: [ opened, synchronize, reopened ]
+    branches:
+      - '*'
 
 jobs:
   notify:
@@ -19,8 +22,8 @@ jobs:
       - name: Get commit details
         id: commit
         run: |
-          echo "::set-output name=message::$(git log -1 --pretty=format:%s)"
-          echo "::set-output name=author::$(git log -1 --pretty=format:%an)"
+          echo "message=$(git log -1 --pretty=format:%s)" >> $GITHUB_OUTPUT
+          echo "author=$(git log -1 --pretty=format:%an)" >> $GITHUB_OUTPUT
 
       - name: Send Telegram notification
         run: |
