@@ -1,3 +1,9 @@
+## <small>0.0.8 (2025-03-22)</small>
+
+* update(soundStore): remove reduant await ([44ad89b](https://github.com/777hanh777hanh/music-app-2025/commit/44ad89b))
+
+
+
 ## <small>0.0.7 (2025-03-22)</small>
 
 * build: setting notification of tele ([5cc5fd3](https://github.com/777hanh777hanh/music-app-2025/commit/5cc5fd3))
