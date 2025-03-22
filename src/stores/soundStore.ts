@@ -12,7 +12,9 @@ export const useSoundStore = defineStore('soundStore', () => {
 	};
 	const playSound = async () => {
 		if (currentSound.value) {
-			await currentSound.value.play();
+			await setTimeout(() => {
+				currentSound.value.play();
+			}, 10);
 		}
 	};
 	const stopSound = async () => {

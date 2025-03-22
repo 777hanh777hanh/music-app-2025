@@ -1,5 +1,55 @@
 import { computed, ref, watch } from 'vue';
-import { Howl } from 'howler';
+
+// Use the createAudioElement function you provided
+function createAudioElement(
+	src: string,
+	loop: boolean = false,
+	volume: number = 1
+): HTMLAudioElement {
+	// Thay vì sử dụng new Audio(), hãy tạo thẻ audio bằng DOM API
+	const audio = document.createElement('audio');
+
+	// Thiết lập source
+	audio.src = src;
+
+	// Thêm các thuộc tính cần thiết cho iOS
+	audio.setAttribute('playsinline', '');
+	audio.setAttribute('webkit-playsinline', '');
+	audio.setAttribute('preload', 'auto');
+
+	// Các thuộc tính khác
+	audio.loop = loop;
+	audio.volume = volume;
+	audio.preload = 'auto';
+
+	audio.addEventListener('error', (e) => {
+		const error = (audio as any).error;
+
+		// Hiển thị thông tin chi tiết về lỗi
+		if (error) {
+			switch (error.code) {
+				case 1:
+					console.error('MEDIA_ERR_ABORTED');
+					break;
+				case 2:
+					console.error('MEDIA_ERR_NETWORK');
+					break;
+				case 3:
+					console.error('MEDIA_ERR_DECODE');
+					break;
+				case 4:
+					// console.error('MEDIA_ERR_SRC_NOT_SUPPORTED');
+					break;
+				default:
+					console.error('Unknown error');
+			}
+		}
+
+		// useHandleError().handleError(e);
+	});
+
+	return audio;
+}
 
 export function useAudioPlayer(
 	currentSongIndex,
@@ -8,16 +58,17 @@ export function useAudioPlayer(
 	listSongs
 ) {
 	const isPlaying = ref(false);
-	const player = ref<Howl | null>(null);
+	const player = ref<HTMLAudioElement | null>(null);
 	const currentSong = ref(listSongs[currentSongIndex.value]);
 	const duration = ref(0);
 	const currentTime = ref(0);
 	const currentSongThumbnail = ref(null);
 	let updateInterval: number | null = null;
 
-	const setupHowler = async () => {
+	const setupAudio = async () => {
 		if (player.value) {
-			player.value.unload();
+			player.value.removeAttribute('src');
+			player.value.load();
 		}
 
 		// Cập nhật `currentSong`
@@ -29,34 +80,48 @@ export function useAudioPlayer(
 		// Lưu vào localStorage
 		saveCurrentSong();
 
-		// Tạo Howler instance
-		player.value = new Howl({
-			src: [currentSong.value.audio],
-			html5: true,
-			preload: true,
-			autoplay: true,
-			onload: () => {
-				duration.value = player.value?.duration() ?? 0;
-			},
-			onplay: () => {
-				isPlaying.value = true;
-				startUpdatingTime();
-			},
-			onpause: () => {
-				isPlaying.value = false;
-				stopUpdatingTime();
-			},
-			onend: () => {
-				handleEndSong();
-			},
-			xhr: {
-				method: 'GET',
-				headers: {
-					'Cache-Control': 'no-store', // ✅ Ngăn IDM cache file
-					'X-Requested-With': 'XMLHttpRequest' // ✅ Ngăn IDM nhận diện là file tải về
-				}
-			}
+		// Tạo Audio instance
+		player.value = createAudioElement(
+			currentSong.value.audio,
+			loopSong.value,
+			0.5
+		);
+
+		currentTime.value = 0;
+
+		// Thêm các event listeners
+		player.value.addEventListener('loadedmetadata', () => {
+			duration.value = player.value?.duration ?? 0;
 		});
+
+		player.value.addEventListener('play', () => {
+			isPlaying.value = true;
+			startUpdatingTime();
+		});
+
+		player.value.addEventListener('pause', () => {
+			isPlaying.value = false;
+			stopUpdatingTime();
+		});
+
+		player.value.addEventListener('ended', () => {
+			isPlaying.value = true;
+			handleEndSong();
+		});
+
+		// Thiết lập request headers để ngăn chặn IDM
+		// Lưu ý: Không thể thiết lập headers với HTMLAudioElement trực tiếp
+		// Cần sử dụng fetch API hoặc XMLHttpRequest nếu cần headers tùy chỉnh
+
+		if (isPlaying.value) {
+			try {
+				setTimeout(() => {
+					player.value && player.value.play();
+				}, 10);
+			} catch (error) {
+				console.error('🔴 Safari Play Error:', error);
+			}
+		}
 	};
 
 	// Tải bài hát từ localStorage trước khi khởi chạy
@@ -66,7 +131,7 @@ export function useAudioPlayer(
 		if (updateInterval) return;
 		updateInterval = window.setInterval(() => {
 			if (player.value) {
-				currentTime.value = player.value.seek() as number;
+				currentTime.value = player.value.currentTime;
 			}
 		}, 1000);
 	};
@@ -80,7 +145,14 @@ export function useAudioPlayer(
 
 	// Theo dõi thay đổi `currentSongIndex`
 	watch(currentSongIndex, () => {
-		setupHowler();
+		setupAudio();
+	});
+
+	// Theo dõi thay đổi `loopSong`
+	watch(loopSong, (newValue) => {
+		if (player.value) {
+			player.value.loop = newValue;
+		}
 	});
 
 	// Lưu bài hát hiện tại vào localStorage
@@ -91,13 +163,18 @@ export function useAudioPlayer(
 
 	function playSong() {
 		console.log('🎵 Playing song:', currentSong.value);
-		console.log('🎵 Playing song:', player.value);
 		try {
-			player.value?.play();
+			setTimeout(() => {
+				player.value?.play().catch((e) => {
+					console.error(e);
+					isPlaying.value = false;
+				});
+			}, 10);
+			isPlaying.value = true;
 		} catch (error) {
 			console.error('🔴 Safari Play Error:', error);
+			isPlaying.value = false;
 		}
-		isPlaying.value = true;
 	}
 
 	const pauseSong = () => {
@@ -106,7 +183,10 @@ export function useAudioPlayer(
 	};
 
 	const stopSong = () => {
-		player.value?.stop();
+		if (player.value) {
+			player.value.pause();
+			player.value.currentTime = 0;
+		}
 		isPlaying.value = false;
 	};
 
@@ -126,7 +206,11 @@ export function useAudioPlayer(
 
 	const handleEndSong = () => {
 		if (loopSong.value) {
-			setupHowler();
+			// Với HTMLAudioElement, loop đã được xử lý tự động
+			// Nhưng chúng ta vẫn cần xử lý cho trường hợp thay đổi bài hát
+			if (!player.value?.loop) {
+				setupAudio();
+			}
 		} else if (randomSong.value) {
 			if (listSongs.length > 1) {
 				currentSongIndex.value = getRandomSongIndex();
@@ -151,15 +235,23 @@ export function useAudioPlayer(
 
 		currentSong.value = listSongs[currentSongIndex.value];
 		console.log('🎵 Loaded song from localStorage:', currentSong.value);
-		setupHowler();
-		playSong();
+		setupAudio();
+
+		// Khôi phục trạng thái phát
+		const storedIsPlaying = localStorage.getItem('isPlaying');
+		if (storedIsPlaying && JSON.parse(storedIsPlaying)) {
+			playSong();
+		}
 	}
 
 	const seekTime = (time: number) => {
 		if (time < 0) time = 0;
 		if (time > duration.value) time = duration.value;
-		currentTime.value = time;
-		player.value?.seek(time);
+
+		if (player.value) {
+			player.value.currentTime = time;
+			currentTime.value = time;
+		}
 	};
 
 	const getRandomSongIndex = () => {

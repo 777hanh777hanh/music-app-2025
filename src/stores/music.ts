@@ -3,6 +3,11 @@ import { computed, onMounted, ref } from 'vue';
 import { useAudioPlayer } from '@/composables/useAudioPlayer';
 import { formatTimeToString } from '@/utils/music';
 
+// interface ExtendedDocument extends Document {
+// 	msHidden?: boolean;
+// 	webkitHidden?: boolean;
+// }
+
 const useMusicStore = defineStore('music-store', () => {
 	const musicList = [
 		{
@@ -90,8 +95,42 @@ const useMusicStore = defineStore('music-store', () => {
 	const durationFormat = computed(() => formatTimeToString(duration.value));
 
 	onMounted(() => {
-		playSong();
+		// playSong();
 	});
+
+	// const playSound = (context: 'bg' | 'game' = 'bg') => {
+	// 	// Prevent playing if muted or no audio elements
+	// 	if (isPlaying.value) return;
+	// 	if (!currentSong.value) return;
+	//
+	// 	const isHidden =
+	// 		(document as ExtendedDocument).hidden ||
+	// 		(document as ExtendedDocument).msHidden ||
+	// 		(document as ExtendedDocument).webkitHidden ||
+	// 		false;
+	//
+	// 	if (isHidden) return;
+	//
+	// 	try {
+	// 		// Pause other audio
+	// 		currentSong.value?.pause();
+	// 		currentSong.value.currentTime = 0;
+	//
+	// 		// Play selected audio
+	// 		const playPromise = currentSong.value?.play();
+	//
+	// 		// Handle potential autoplay restrictions
+	// 		if (playPromise !== undefined) {
+	// 			playPromise.catch((error) => {
+	// 				console.warn('Autoplay was prevented:', error);
+	// 			});
+	// 		}
+	//
+	// 		isPlaying.value = true;
+	// 	} catch (error) {
+	// 		console.error('Error playing sound:', error);
+	// 	}
+	// };
 
 	return {
 		musicList,
@@ -107,6 +146,7 @@ const useMusicStore = defineStore('music-store', () => {
 		stopSong,
 		nextSong,
 		prevSong,
+		// playSound,
 		currentSongThumbnail,
 		toggleLoopSong,
 		toggleRandomSong,

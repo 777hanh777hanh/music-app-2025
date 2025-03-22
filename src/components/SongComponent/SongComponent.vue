@@ -1,6 +1,6 @@
 <script setup lang="ts">
 	import { storeToRefs } from 'pinia';
-	import { computed, onMounted, ref } from 'vue';
+	import { computed, onMounted, onUnmounted, ref } from 'vue';
 	import { useMusicStore } from '@/stores/music';
 
 	const musicStore = useMusicStore();
@@ -15,6 +15,7 @@
 	const { seekTime, playSong, pauseSong } = musicStore;
 
 	const progressBar = ref<HTMLElement | null>(null);
+	const progressBarDot = ref<HTMLElement | null>(null);
 	const isDragging = ref(false);
 	const tempSeekTime = ref(0); // Giá trị tạm thời khi kéo dot
 	const wasPlayingBeforeDrag = ref(false); // Ghi nhớ trạng thái phát nhạc trước khi kéo
@@ -52,6 +53,7 @@
 		// Tạm dừng nhạc khi kéo
 		pauseSong();
 
+		// Thêm event listeners cho cả document thay vì chỉ cho dot
 		document.addEventListener('mousemove', handleDragMove);
 		document.addEventListener('mouseup', handleDragEnd);
 		document.addEventListener('touchmove', handleDragMove, {
@@ -60,7 +62,7 @@
 		document.addEventListener('touchend', handleDragEnd);
 	};
 
-	// 🔹 Khi di chuyển chuột hoặc cảm ứng, cập nhật UI nhưng không phát nhạc
+	// 🔹 Khi di chuyển chuột hoặc cảm ứng, cập nhật UI và âm nhạc theo thời gian thực
 	const handleDragMove = (event: MouseEvent | TouchEvent) => {
 		if (!isDragging.value || !progressBar.value || !duration.value) return;
 
@@ -73,26 +75,32 @@
 		const rect = progressBar.value.getBoundingClientRect();
 		const moveX = clientX - rect.left;
 		const percent = Math.max(0, Math.min(moveX / rect.width, 1));
-		tempSeekTime.value = duration.value * percent; // Cập nhật giá trị tạm thời khi kéo
-		currentTime.value = tempSeekTime.value; // Cập nhật UI nhưng không tua nhạc
+		tempSeekTime.value = duration.value * percent; // Cập nhật giá trị tạm thời
+
+		// Cập nhật vị trí phát âm nhạc theo thời gian thực
+		seekTime(tempSeekTime.value);
 	};
 
-	// 🔹 Khi thả chuột/cảm ứng, cập nhật `seekTime` và phát nhạc nếu cần
+	// 🔹 Khi thả chuột/cảm ứng, chỉ cần phát nhạc lại nếu cần
 	const handleDragEnd = () => {
+		if (!isDragging.value) return;
+
 		isDragging.value = false;
-		seekTime(tempSeekTime.value); // Cập nhật nhạc chính thức
+		// Không cần gọi seekTime ở đây nữa vì đã được cập nhật trong handleDragMove
 
 		// Nếu trước đó nhạc đang phát, tiếp tục phát lại
 		if (wasPlayingBeforeDrag.value) {
 			playSong();
 		}
 
+		// Xóa event listeners từ document
 		document.removeEventListener('mousemove', handleDragMove);
 		document.removeEventListener('mouseup', handleDragEnd);
 		document.removeEventListener('touchmove', handleDragMove);
 		document.removeEventListener('touchend', handleDragEnd);
 	};
 
+	// Tự động phát nhạc khi người dùng tương tác với trang
 	document.addEventListener(
 		'click',
 		() => {
@@ -114,6 +122,16 @@
 
 	onMounted(() => {
 		playSong();
+	});
+
+	// Đảm bảo xóa event listeners khi component bị hủy
+	onUnmounted(() => {
+		if (isDragging.value) {
+			document.removeEventListener('mousemove', handleDragMove);
+			document.removeEventListener('mouseup', handleDragEnd);
+			document.removeEventListener('touchmove', handleDragMove);
+			document.removeEventListener('touchend', handleDragEnd);
+		}
 	});
 </script>
 
@@ -142,8 +160,9 @@
 				:style="{ '--progress-width': progressPercent + '%' }"
 			>
 				<div
-					@mousedown="handleDragStart"
-					@touchStart="handleDragStart"
+					@mousedown.stop="handleDragStart"
+					@touchstart.stop="handleDragStart"
+					ref="progressBarDot"
 					class="song__dot"
 					:style="{ left: progressPercent + '%' }"
 				></div>
@@ -242,9 +261,10 @@
 			height: 18px;
 			border-radius: 50%;
 			background: var(--navbar-bg-clr);
-
+			z-index: 10;
+			cursor: pointer;
 			transform: translateX(-50%) translateY(-50%);
-			transition: translate 0.5s linear;
+			transition: none; /* Bỏ transition khi kéo dot */
 		}
 
 		&__title {

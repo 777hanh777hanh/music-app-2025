@@ -45,7 +45,7 @@
 	};
 
 	onMounted(() => {
-		(playButton.value as HTMLDivElement).click();
+		// (playButton.value as HTMLDivElement).click();
 	});
 </script>
 

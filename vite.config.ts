@@ -29,7 +29,7 @@ export default defineConfig({
 		extensions: ['.js', '.vue', '.ts']
 	},
 	server: {
-		port: 3000
+		port: 5050
 	},
 	publicDir: 'public',
 	build: {
