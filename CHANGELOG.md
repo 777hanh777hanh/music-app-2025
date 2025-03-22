@@ -1,3 +1,9 @@
+## <small>0.0.6 (2025-03-22)</small>
+
+* build: Classification of Notification for Telegram ([1541c7a](https://github.com/777hanh777hanh/music-app-2025/commit/1541c7a))
+
+
+
 ## <small>0.0.5 (2025-03-22)</small>
 
 * build: update notify telegram ([6ff8526](https://github.com/777hanh777hanh/music-app-2025/commit/6ff8526))
