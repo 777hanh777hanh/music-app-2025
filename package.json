@@ -1,6 +1,6 @@
 {
   "name": "music-app",
-  "version": "0.0.19",
+  "version": "0.0.21",
   "dependencies": {
     "@ionic/vue": "^8.4.1",
     "@marcoschulte/vue3-progress": "^0.0.7",
@@ -30,6 +30,8 @@
     "@types/node": "^22.10.2",
     "@vitejs/plugin-vue": "^5.2.1",
     "@vue/tsconfig": "^0.7.0",
+    "bumped-changelog": "^0.4.1",
+    "bumped-terminal": "^0.8.1",
     "eslint": "^9.18.0",
     "eslint-plugin-vue": "^9.32.0",
     "npm-run-all2": "^7.0.2",
