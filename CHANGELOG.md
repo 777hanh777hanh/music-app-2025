@@ -1,3 +1,8 @@
+## <small>0.0.12 (2025-04-03)</small>
+
+
+
+
 ## <small>0.0.8 (2025-03-22)</small>
 
 * update(soundStore): remove reduant await ([44ad89b](https://github.com/777hanh777hanh/music-app-2025/commit/44ad89b))
