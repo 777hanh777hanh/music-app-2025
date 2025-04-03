@@ -1,6 +1,6 @@
 {
   "name": "music-app",
-  "version": "0.0.18",
+  "version": "0.0.19",
   "dependencies": {
     "@ionic/vue": "^8.4.1",
     "@marcoschulte/vue3-progress": "^0.0.7",
