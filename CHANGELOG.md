@@ -1,3 +1,9 @@
+## <small>0.0.27 (2025-04-06)</small>
+
+* build: update dependencies ([1e5e6b8](https://github.com/777hanh777hanh/music-app-2025/commit/1e5e6b8))
+
+
+
 ## <small>0.0.26 (2025-04-06)</small>
 
 
